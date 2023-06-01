@@ -16,6 +16,7 @@
         var searchForm = document.querySelector('#search-form');
         searchForm.addEventListener('submit', function(e){
             e.preventDefault();
+            photodivs.innerHTML = '';
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
             if (xhr.status === 200) {
