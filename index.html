@@ -13,32 +13,37 @@
     </form>
     <div id="photodivs"></div>
     <script>
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            console.log(response);
-            photodata = response.photos.map(function(photo){
-                return photo;
-            });
-            var photodivs = document.querySelector('#photodivs');
-            photodata.forEach(function(photo) {
-                var photodiv = document.createElement('div');
-                photodiv.innerHTML = `
-                    <img src=${photo.src.medium}>
-                `;
-                photodivs.appendChild(photodiv);
-            });
-        } else {
-            console.log('Error:', xhr.status);
-        }
-        };
-        xhr.onerror = function() {
-        console.log('Request failed');
-        };
-        xhr.open('GET', 'https://api.pexels.com/v1/search?query=football', true);
-        xhr.setRequestHeader('Authorization', '7Hk7Zge8wanaeBBpikIvnffKGUUFMy8nbT79LW0D5X13SQd1M6RWGF2O');
-        xhr.send();
+        var searchForm = document.querySelector('#search-form');
+        searchForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response);
+                photodata = response.photos.map(function(photo){
+                    return photo;
+                });
+                var photodivs = document.querySelector('#photodivs');
+                photodata.forEach(function(photo) {
+                    var photodiv = document.createElement('div');
+                    photodiv.innerHTML = `
+                        <img src=${photo.src.medium}>
+                    `;
+                    photodivs.appendChild(photodiv);
+                });
+            } else {
+                console.log('Error:', xhr.status);
+            }
+            };
+            xhr.onerror = function() {
+            console.log('Request failed');
+            };
+            var textValue = document.querySelector('#search-bar').value;
+            xhr.open('GET', `https://api.pexels.com/v1/search?query=${textValue}`, true);
+            xhr.setRequestHeader('Authorization', '7Hk7Zge8wanaeBBpikIvnffKGUUFMy8nbT79LW0D5X13SQd1M6RWGF2O');
+            xhr.send();
+        })
     </script>
 </body>
 </html>
